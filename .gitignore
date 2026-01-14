@@ -1,0 +1,18 @@
+*# 虚拟环境
+.venv/
+
+# 打包文件
+dist/
+build/
+*.exe
+
+# 依赖文件
+requirements.txt
+
+# PyInstaller生成文件
+*.spec
+
+spectrum_comparison tkinter.py
+C5－GB 50011-2010（2016版）建筑抗震设计规范.pdf
+read_pdf.py
+test_qfluentwidgets.py
