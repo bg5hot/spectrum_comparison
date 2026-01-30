@@ -1,3 +1,5 @@
+# 2026014：增加风速转换模块，通过左上角的按钮切换到风速转换界面
+
 #  -python version: 3.11.9
 # - numpy==2.4.1
 # - matplotlib==3.10.8
@@ -21,7 +23,7 @@ from qfluentwidgets import (
     FluentWindow, SubtitleLabel, BodyLabel, StrongBodyLabel,
     ComboBox, DoubleSpinBox, PrimaryPushButton,
     CardWidget, ScrollArea, setTheme, Theme, InfoBar, InfoBarPosition,
-    FluentIcon as FIF 
+    FluentIcon as FIF, TextEdit
 )
 
 # ==========================================
@@ -127,6 +129,78 @@ def calculate_us_spectrum(Ss, S1, site_class, TL, R, damping=0.05):
 
 
     return periods, Sa, SDS, SD1, Fa, Fv
+
+
+def convert_wind_speed_to_chinese(wind_speed, input_unit, input_height, input_time, return_period):
+    """
+    将ASCE7风速转换为中国GB50009基本风压
+    
+    参数:
+        wind_speed: 输入风速值
+        input_unit: 输入单位 ('mph' 或 'm/s')
+        input_height: 测量高度
+        input_time: 测量时距 ('3s', '10s', '60s', '10min', '1h')
+        return_period: 重现期 ('300y', '700y', '1700y', '3000y')
+    
+    返回:
+        dict: 包含转换结果和详细过程的字典
+    """
+    process = []
+    
+    # 1. 单位转换：mph -> m/s
+    if input_unit == 'mph':
+        wind_speed_ms = wind_speed * 0.44704
+        process.append(f"单位转换: {wind_speed:.2f} mph = {wind_speed_ms:.2f} m/s")
+    else:
+        wind_speed_ms = wind_speed
+        process.append(f"风速: {wind_speed_ms:.2f} m/s")
+    
+    # 2. 重现期转换系数
+    return_period_factors = {
+        '300y': 1.179,
+        '700y': 1.264,
+        '1700y': 1.352,
+        '3000y': 1.409
+    }
+    rp_factor = return_period_factors.get(return_period, 1.26)
+    v_50 = wind_speed_ms / rp_factor
+    process.append(f"重现期转换 ({return_period} -> 50y): {wind_speed_ms:.2f} / {rp_factor:.2f} = {v_50:.2f} m/s")
+    
+    # 3. 时距转换系数（基于Durst曲线）
+    time_factors = {
+        '3s': 1.52,
+        '10s': 1.43,
+        '60s': 1.27,
+        '10min': 1.06,
+        '1h': 1.00
+    }
+    # 计算到1小时平均风速
+    v_1h = v_50 / time_factors.get(input_time, 1.52)
+    # 转换到10分钟平均风速
+    v_10min = v_1h * time_factors['10min']
+    process.append(f"时距转换 ({input_time} -> 10min): {v_50:.2f} / {time_factors.get(input_time, 1.52):.2f} * 1.06 = {v_10min:.2f} m/s")
+    
+    # 4. 高度转换到10m（使用幂律公式，假设Exposure C/B类地貌）
+    # 幂律指数：B类约0.16，C类约0.14
+    alpha = 0.15  # 取中间值
+    if input_height != 10:
+        v_10m = v_10min * (10 / input_height) ** alpha
+        process.append(f"高度转换 ({input_height}m -> 10m): {v_10min:.2f} * (10/{input_height})^{alpha:.2f} = {v_10m:.2f} m/s")
+    else:
+        v_10m = v_10min
+        process.append(f"高度已是10m，无需转换: {v_10m:.2f} m/s")
+    
+    # 5. 计算基本风压（中国规范）
+    # w0 = 0.5 * rho * v^2
+    rho = 1.25  # 空气密度 kg/m³
+    w0 = 0.5 * rho * v_10m ** 2 / 1000  # 转换为kN/m²
+    process.append(f"基本风压计算: w0 = 0.5 * {rho} * {v_10m:.2f}² / 1000 = {w0:.3f} kN/m²")
+    
+    return {
+        'wind_speed_50y_10m_10min': v_10m,
+        'basic_wind_pressure': w0,
+        'process': process
+    }
 
 
 # ==========================================
@@ -377,18 +451,151 @@ class SpectrumInterface(QWidget):
         except Exception as e:
             print(f"Calculation Error: {e}")
 
+
+class WindConversionInterface(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.setObjectName("WindConversionInterface")
+        
+        # 主布局
+        self.v_layout = QVBoxLayout(self)
+        
+        # 创建滚动区域
+        self.scroll_area = ScrollArea()
+        self.setting_widget = QWidget()
+        self.setting_layout = QVBoxLayout(self.setting_widget)
+        
+        self.init_wind_conversion_settings()
+        self.setting_layout.addStretch(1)
+        
+        self.scroll_area.setWidget(self.setting_widget)
+        self.scroll_area.setWidgetResizable(True)
+        self.v_layout.addWidget(self.scroll_area)
+    
+    def add_section_title(self, text):
+        label = SubtitleLabel(text, self)
+        self.setting_layout.addWidget(label)
+    
+    def init_wind_conversion_settings(self):
+        self.add_section_title("风速转换 (ASCE7 -> GB50009)")
+        
+        card = CardWidget(self)
+        v_layout = QVBoxLayout(card)
+        v_layout.setContentsMargins(16, 16, 16, 16)
+        v_layout.setSpacing(15)
+        
+        # 风速值和单位
+        r1 = QHBoxLayout()
+        r1.addWidget(BodyLabel("风速:"))
+        self.wind_speed_spin = DoubleSpinBox()
+        self.wind_speed_spin.setRange(0, 500)
+        self.wind_speed_spin.setValue(115)
+        self.wind_speed_spin.setSingleStep(1)
+        r1.addWidget(self.wind_speed_spin)
+        
+        self.wind_unit_cb = ComboBox()
+        self.wind_unit_cb.addItems(['mph', 'm/s'])
+        self.wind_unit_cb.setCurrentText('mph')
+        self.wind_unit_cb.setFixedWidth(80)
+        r1.addWidget(self.wind_unit_cb)
+        v_layout.addLayout(r1)
+        
+        # 测量高度
+        r2 = QHBoxLayout()
+        r2.addWidget(BodyLabel("测量高度 (m):"))
+        self.wind_height_spin = DoubleSpinBox()
+        self.wind_height_spin.setRange(1, 500)
+        self.wind_height_spin.setValue(10)
+        self.wind_height_spin.setSingleStep(1)
+        r2.addWidget(self.wind_height_spin)
+        v_layout.addLayout(r2)
+        
+        # 测量时距
+        r3 = QHBoxLayout()
+        r3.addWidget(BodyLabel("测量时距:"))
+        self.wind_time_cb = ComboBox()
+        self.wind_time_cb.addItems(['3s', '10s', '60s', '10min', '1h'])
+        self.wind_time_cb.setCurrentText('3s')
+        r3.addWidget(self.wind_time_cb)
+        v_layout.addLayout(r3)
+        
+        # 重现期
+        r4 = QHBoxLayout()
+        r4.addWidget(BodyLabel("重现期:"))
+        self.wind_rp_cb = ComboBox()
+        self.wind_rp_cb.addItems(['300y', '700y', '1700y', '3000y'])
+        self.wind_rp_cb.setCurrentText('700y')
+        r4.addWidget(self.wind_rp_cb)
+        v_layout.addLayout(r4)
+        
+        # 转换按钮
+        self.convert_btn = PrimaryPushButton("执行转换")
+        self.convert_btn.clicked.connect(self.convert_wind_speed)
+        v_layout.addWidget(self.convert_btn)
+        
+        line = QFrame()
+        line.setFrameShape(QFrame.Shape.HLine)
+        line.setStyleSheet("color: #ccc;")
+        v_layout.addWidget(line)
+        
+        # 输出结果
+        self.lbl_wind_result1 = StrongBodyLabel("转换结果")
+        v_layout.addWidget(self.lbl_wind_result1)
+        
+        self.lbl_wind_result2 = BodyLabel("50年重现期, 10m高度, 10分钟平均风速: - m/s")
+        v_layout.addWidget(self.lbl_wind_result2)
+        
+        self.lbl_wind_result3 = StrongBodyLabel("基本风压: - kN/m²")
+        v_layout.addWidget(self.lbl_wind_result3)
+        
+        # 转换过程
+        v_layout.addWidget(BodyLabel("转换过程:"))
+        self.wind_process_text = TextEdit()
+        self.wind_process_text.setReadOnly(True)
+        self.wind_process_text.setFixedHeight(150)
+        v_layout.addWidget(self.wind_process_text)
+        
+        self.setting_layout.addWidget(card)
+    
+    def convert_wind_speed(self):
+        try:
+            # 获取输入参数
+            wind_speed = self.wind_speed_spin.value()
+            input_unit = self.wind_unit_cb.currentText()
+            input_height = self.wind_height_spin.value()
+            input_time = self.wind_time_cb.currentText()
+            return_period = self.wind_rp_cb.currentText()
+            
+            # 执行转换
+            result = convert_wind_speed_to_chinese(wind_speed, input_unit, input_height, input_time, return_period)
+            
+            # 更新结果显示
+            self.lbl_wind_result2.setText(f"50年重现期, 10m高度, 10分钟平均风速: {result['wind_speed_50y_10m_10min']:.2f} m/s")
+            self.lbl_wind_result3.setText(f"基本风压: {result['basic_wind_pressure']:.3f} kN/m²")
+            
+            # 显示转换过程
+            process_text = "\n".join(result['process'])
+            self.wind_process_text.setPlainText(process_text)
+            
+        except Exception as e:
+            self.wind_process_text.setPlainText(f"转换错误: {str(e)}")
+
+
 class MainWindow(FluentWindow):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("中美规范设计反应谱比较")
+        self.setWindowTitle("中美规范主要参数转换")
         self.resize(1400, 750)
         
-        # 创建主界面
-        self.interface = SpectrumInterface()
+        # 创建反应谱比较界面
+        self.spectrum_interface = SpectrumInterface()
+        
+        # 创建风速转换界面
+        self.wind_interface = WindConversionInterface()
         
         # 将界面添加到主窗口
-        # 使用 FIF.HOME 确保图标正确，interface 已有 objectName
-        self.addSubInterface(self.interface, FIF.HOME, "主页")
+        self.addSubInterface(self.spectrum_interface, FIF.HOME, "反应谱比较")
+        self.addSubInterface(self.wind_interface, FIF.SYNC, "风速转换")
         
         # 默认居中
         screen = QApplication.primaryScreen().geometry()
