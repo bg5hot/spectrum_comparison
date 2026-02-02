@@ -1,0 +1,160 @@
+<UserControl x:Class="SpectrumComparison.SpectrumView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:SpectrumComparison"
+             xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.WPF;assembly=LiveChartsCore.SkiaSharpView.WPF"
+             mc:Ignorable="d" 
+             d:DesignHeight="750" d:DesignWidth="1200">
+
+    <UserControl.DataContext>
+        <local:SpectrumViewModel/>
+    </UserControl.DataContext>
+
+    <Grid Background="{StaticResource FluentBackgroundBrush}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="450"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Left Panel: Settings -->
+        <ScrollViewer Grid.Column="0" VerticalScrollBarVisibility="Auto" Margin="16">
+            <StackPanel>
+                <!-- Common Settings -->
+                <TextBlock Text="结构参数" Style="{StaticResource SectionTitleStyle}"/>
+                <Border Style="{StaticResource CardStyle}">
+                    <StackPanel>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="结构阻尼比 Damping:" Style="{StaticResource LabelStyle}" Grid.Column="0"/>
+                            <TextBox Text="{Binding Damping, StringFormat=F2}" Style="{StaticResource FluentNumericStyle}" Grid.Column="1"/>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+                <!-- China Settings -->
+                <TextBlock Text="中国规范 (GB50011-2010)" Style="{StaticResource SectionTitleStyle}"/>
+                <Border Style="{StaticResource CardStyle}">
+                    <StackPanel>
+                        <!-- 设防烈度 -->
+                        <Grid Margin="0,0,0,12">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="设防烈度:" Style="{StaticResource LabelStyle}" Grid.Column="0"/>
+                            <ComboBox ItemsSource="{Binding IntensityOptions}" SelectedItem="{Binding ChinaIntensity}" 
+                                      Style="{StaticResource FluentComboBoxStyle}" Grid.Column="1"/>
+                        </Grid>
+
+                        <!-- 场地类别 -->
+                        <Grid Margin="0,0,0,12">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="场地类别:" Style="{StaticResource LabelStyle}" Grid.Column="0"/>
+                            <ComboBox ItemsSource="{Binding SiteCategoryOptions}" SelectedItem="{Binding ChinaSiteCategory}" 
+                                      Style="{StaticResource FluentComboBoxStyle}" Grid.Column="1"/>
+                        </Grid>
+
+                        <!-- 地震分组 -->
+                        <Grid Margin="0,0,0,12">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="地震分组:" Style="{StaticResource LabelStyle}" Grid.Column="0"/>
+                            <ComboBox ItemsSource="{Binding EarthquakeGroupOptions}" SelectedItem="{Binding ChinaEarthquakeGroup}" 
+                                      Style="{StaticResource FluentComboBoxStyle}" Grid.Column="1"/>
+                        </Grid>
+
+                        <Separator Style="{StaticResource SeparatorStyle}"/>
+
+                        <!-- Results -->
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="{Binding AlphaMaxText}" Style="{StaticResource StrongLabelStyle}" Grid.Column="0"/>
+                            <TextBlock Text="{Binding TgText}" Style="{StaticResource StrongLabelStyle}" Grid.Column="1" HorizontalAlignment="Right"/>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+                <!-- US Settings -->
+                <TextBlock Text="美国规范 (ASCE 7-16)" Style="{StaticResource SectionTitleStyle}"/>
+                <Border Style="{StaticResource CardStyle}">
+                    <StackPanel>
+                        <!-- Ss, S1 -->
+                        <Grid Margin="0,0,0,12">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="Ss (g):" Style="{StaticResource LabelStyle}" Grid.Column="0"/>
+                            <TextBox Text="{Binding UsSs, StringFormat=F2}" Style="{StaticResource FluentNumericStyle}" Grid.Column="1" Margin="0,0,8,0"/>
+                            <TextBlock Text="S1 (g):" Style="{StaticResource LabelStyle}" Grid.Column="2"/>
+                            <TextBox Text="{Binding UsS1, StringFormat=F2}" Style="{StaticResource FluentNumericStyle}" Grid.Column="3"/>
+                        </Grid>
+
+                        <!-- Site Class -->
+                        <Grid Margin="0,0,0,12">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="Site Class:" Style="{StaticResource LabelStyle}" Grid.Column="0"/>
+                            <ComboBox ItemsSource="{Binding UsSiteClassOptions}" SelectedItem="{Binding UsSiteClass}" 
+                                      Style="{StaticResource FluentComboBoxStyle}" Grid.Column="1"/>
+                        </Grid>
+
+                        <!-- TL, R -->
+                        <Grid Margin="0,0,0,12">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="TL (s):" Style="{StaticResource LabelStyle}" Grid.Column="0"/>
+                            <TextBox Text="{Binding UsTl, StringFormat=F1}" Style="{StaticResource FluentNumericStyle}" Grid.Column="1" Margin="0,0,8,0"/>
+                            <TextBlock Text="R:" Style="{StaticResource LabelStyle}" Grid.Column="2"/>
+                            <TextBox Text="{Binding UsR, StringFormat=F1}" Style="{StaticResource FluentNumericStyle}" Grid.Column="3"/>
+                        </Grid>
+
+                        <Separator Style="{StaticResource SeparatorStyle}"/>
+
+                        <!-- Results -->
+                        <TextBlock Text="{Binding UsFaFvText}" Style="{StaticResource LabelStyle}" Margin="0,0,0,4"/>
+                        <TextBlock Text="{Binding UsSdsSd1Text}" Style="{StaticResource StrongLabelStyle}"/>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </ScrollViewer>
+
+        <!-- Right Panel: Chart -->
+        <Border Grid.Column="1" Background="White" Margin="0,16,16,16" CornerRadius="8" BorderBrush="{StaticResource FluentBorderBrush}" BorderThickness="1">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <TextBlock Text="Response Spectrum Comparison" FontSize="16" FontWeight="SemiBold" Margin="16" Foreground="{StaticResource FluentTextBrush}"/>
+                <lvc:CartesianChart Grid.Row="1" 
+                                    Series="{Binding Series}"
+                                    XAxes="{Binding XAxes}"
+                                    YAxes="{Binding YAxes}"
+                                    Margin="16,0,16,16"
+                                    LegendPosition="Right"/>
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>

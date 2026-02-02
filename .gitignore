@@ -16,3 +16,7 @@ spectrum_comparison tkinter.py
 C5－GB 50011-2010（2016版）建筑抗震设计规范.pdf
 read_pdf.py
 test_qfluentwidgets.py
+
+# CSharp相关
+obj/
+bin/
