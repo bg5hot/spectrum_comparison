@@ -1,3 +1,6 @@
+20260202更新
+由于python打包的可执行文件体积过大，改为c#语音，保留原来的界面风格，后续更新都将基于c#
+
 20260130更新 增加风速转换模块，点击左上角切换，截面如下图
 可执行exe文件下载地址
 链接: https://pan.baidu.com/s/1wY_FjE5OIFNlRYAlDlXasQ?pwd=rc8d 提取码: rc8d
