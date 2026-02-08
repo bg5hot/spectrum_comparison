@@ -1,0 +1,39 @@
+<UserControl x:Class="SpectrumComparison.WeChatView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:SpectrumComparison"
+             mc:Ignorable="d" 
+             d:DesignHeight="750" d:DesignWidth="1200">
+
+    <Grid Background="{StaticResource FluentBackgroundBrush}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        
+        <Grid Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center">
+            <StackPanel Width="300" HorizontalAlignment="Center">
+                <TextBlock Text="关注公众号" Style="{StaticResource SectionTitleStyle}" HorizontalAlignment="Center" Margin="0,0,0,24"/>
+                
+                <Border Style="{StaticResource CardStyle}" Padding="32">
+                    <StackPanel HorizontalAlignment="Center">
+                        <!-- 二维码 -->
+                        <Image Width="300" Height="300" HorizontalAlignment="Center" Margin="0,0,0,16">
+                            <Image.Source>
+                                <BitmapImage UriSource="/qrcode_for_gh_88e97e7d9e0f_344.jpg"/>
+                            </Image.Source>
+                        </Image>
+                        
+                        <TextBlock Text="美标学习日记" FontSize="16" FontWeight="Medium" HorizontalAlignment="Center" Margin="0,0,0,8"/>
+                        <TextBlock Text="获取更多结构计算工具和技术资料" FontSize="14" Foreground="#666666" HorizontalAlignment="Center" TextWrapping="Wrap" TextAlignment="Center"/>
+                    </StackPanel>
+                </Border>
+                
+                <TextBlock Text="© 2026 美标学习日记" FontSize="12" Foreground="#999999" HorizontalAlignment="Center" Margin="0,24,0,0"/>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</UserControl>

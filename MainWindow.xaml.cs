@@ -20,5 +20,17 @@ namespace SpectrumComparison
             contentControl.ContentTemplate = (DataTemplate)FindResource("WindConversionViewTemplate");
             contentControl.Content = new WindConversionView();
         }
+
+        private void BtnGust_Click(object sender, RoutedEventArgs e)
+        {
+            contentControl.ContentTemplate = (DataTemplate)FindResource("GustEffectFactorViewTemplate");
+            contentControl.Content = new GustEffectFactorView();
+        }
+
+        private void BtnWeChat_Click(object sender, RoutedEventArgs e)
+        {
+            contentControl.ContentTemplate = (DataTemplate)FindResource("WeChatViewTemplate");
+            contentControl.Content = new WeChatView();
+        }
     }
 }

@@ -5,8 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SpectrumComparison"
         mc:Ignorable="d"
-        Title="中美规范主要参数转换" 
-        Height="800" Width="1400"
+        Title="美标设计实用工具集 v1.0 作者 王昕@gad" 
+        Height="900" Width="1400"
         WindowStartupLocation="CenterScreen"
         Background="{StaticResource FluentBackgroundBrush}">
 
@@ -16,6 +16,12 @@
         </DataTemplate>
         <DataTemplate x:Key="WindConversionViewTemplate">
             <local:WindConversionView/>
+        </DataTemplate>
+        <DataTemplate x:Key="GustEffectFactorViewTemplate">
+            <local:GustEffectFactorView/>
+        </DataTemplate>
+        <DataTemplate x:Key="WeChatViewTemplate">
+            <local:WeChatView/>
         </DataTemplate>
     </Window.Resources>
 
@@ -28,7 +34,7 @@
         <!-- Navigation Panel -->
         <Border Grid.Column="0" Width="200" Background="White" BorderBrush="{StaticResource FluentBorderBrush}" BorderThickness="0,0,1,0">
             <StackPanel>
-                <TextBlock Text="中美规范转换" FontSize="18" FontWeight="Bold" Margin="16,20,16,10" Foreground="{StaticResource FluentTextBrush}"/>
+                <TextBlock Text="结构计算工具" FontSize="18" FontWeight="Bold" Margin="16,20,16,10" Foreground="{StaticResource FluentTextBrush}"/>
                 <Separator Margin="16,0"/>
 
                 <!-- Navigation Items -->
@@ -45,6 +51,24 @@
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="&#xE753;" FontFamily="Segoe MDL2 Assets" FontSize="20" Margin="0,0,12,0" Foreground="{StaticResource FluentBlueBrush}"/>
                         <TextBlock Text="风速转换" FontSize="14" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
+
+                <Button x:Name="btnGust" Click="BtnGust_Click" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" 
+                        HorizontalContentAlignment="Left" Padding="16,12" Margin="8,4,8,0">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="&#xE753;" FontFamily="Segoe MDL2 Assets" FontSize="20" Margin="0,0,12,0" Foreground="{StaticResource FluentBlueBrush}"/>
+                        <TextBlock Text="阵风响应因子G" FontSize="14" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
+
+                <Separator Margin="16,20"/>
+                
+                <Button x:Name="btnWeChat" Click="BtnWeChat_Click" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" 
+                        HorizontalContentAlignment="Left" Padding="16,12" Margin="8,4,8,0">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="&#xE717;" FontFamily="Segoe MDL2 Assets" FontSize="20" Margin="0,0,12,0" Foreground="{StaticResource FluentBlueBrush}"/>
+                        <TextBlock Text="关注公众号" FontSize="14" VerticalAlignment="Center"/>
                     </StackPanel>
                 </Button>
             </StackPanel>

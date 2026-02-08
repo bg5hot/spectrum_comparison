@@ -1,0 +1,53 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "G:\\OneDrive\\\u5DE5\u4F5C\u6587\u4EF6\\#Coding\\ASCE7 vs GB50011\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{5936B5C3-7D90-4FEF-FBA3-C3E29CD4F40D}|USCodeTools.csproj|g:\\onedrive\\\u5DE5\u4F5C\u6587\u4EF6\\#coding\\asce7 vs gb50011\\uscodetools.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{5936B5C3-7D90-4FEF-FBA3-C3E29CD4F40D}|USCodeTools.csproj|solutionrelative:uscodetools.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5936B5C3-7D90-4FEF-FBA3-C3E29CD4F40D}|USCodeTools.csproj|g:\\onedrive\\\u5DE5\u4F5C\u6587\u4EF6\\#coding\\asce7 vs gb50011\\wechatview.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{5936B5C3-7D90-4FEF-FBA3-C3E29CD4F40D}|USCodeTools.csproj|solutionrelative:wechatview.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "USCodeTools",
+              "DocumentMoniker": "G:\\OneDrive\\\u5DE5\u4F5C\u6587\u4EF6\\#Coding\\ASCE7 vs GB50011\\USCodeTools.csproj",
+              "RelativeDocumentMoniker": "USCodeTools.csproj",
+              "ToolTip": "G:\\OneDrive\\\u5DE5\u4F5C\u6587\u4EF6\\#Coding\\ASCE7 vs GB50011\\USCodeTools.csproj",
+              "RelativeToolTip": "USCodeTools.csproj",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAA8AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2026-02-08T08:08:47.846Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "WeChatView.xaml",
+              "DocumentMoniker": "G:\\OneDrive\\\u5DE5\u4F5C\u6587\u4EF6\\#Coding\\ASCE7 vs GB50011\\WeChatView.xaml",
+              "RelativeDocumentMoniker": "WeChatView.xaml",
+              "ToolTip": "G:\\OneDrive\\\u5DE5\u4F5C\u6587\u4EF6\\#Coding\\ASCE7 vs GB50011\\WeChatView.xaml",
+              "RelativeToolTip": "WeChatView.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2026-02-08T08:07:30.386Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
