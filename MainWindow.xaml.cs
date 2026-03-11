@@ -27,6 +27,24 @@ namespace SpectrumComparison
             contentControl.Content = new GustEffectFactorView();
         }
 
+        private void BtnBeam_Click(object sender, RoutedEventArgs e)
+        {
+            contentControl.ContentTemplate = (DataTemplate)FindResource("BeamDesignViewTemplate");
+            contentControl.Content = new BeamDesignView();
+        }
+
+        private void BtnColumn_Click(object sender, RoutedEventArgs e)
+        {
+            contentControl.ContentTemplate = (DataTemplate)FindResource("ColumnDesignViewTemplate");
+            contentControl.Content = new ColumnDesignView();
+        }
+
+        private void BtnCircularColumn_Click(object sender, RoutedEventArgs e)
+        {
+            contentControl.ContentTemplate = (DataTemplate)FindResource("CircularColumnDesignViewTemplate");
+            contentControl.Content = new CircularColumnDesignView();
+        }
+
         private void BtnWeChat_Click(object sender, RoutedEventArgs e)
         {
             contentControl.ContentTemplate = (DataTemplate)FindResource("WeChatViewTemplate");

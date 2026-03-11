@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
@@ -14,13 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-	  <Resource Include="qrcode_for_gh_88e97e7d9e0f_344.jpg" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="read_pdf.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <Resource Include="qrcode_for_gh_88e97e7d9e0f_344.jpg" />
   </ItemGroup>
 
 </Project>

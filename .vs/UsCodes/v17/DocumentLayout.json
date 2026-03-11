@@ -23,7 +23,7 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "USCodeTools",
+              "Title": "USCodeTools.csproj",
               "DocumentMoniker": "G:\\OneDrive\\\u5DE5\u4F5C\u6587\u4EF6\\#Coding\\ASCE7 vs GB50011\\USCodeTools.csproj",
               "RelativeDocumentMoniker": "USCodeTools.csproj",
               "ToolTip": "G:\\OneDrive\\\u5DE5\u4F5C\u6587\u4EF6\\#Coding\\ASCE7 vs GB50011\\USCodeTools.csproj",
@@ -42,8 +42,7 @@
               "ToolTip": "G:\\OneDrive\\\u5DE5\u4F5C\u6587\u4EF6\\#Coding\\ASCE7 vs GB50011\\WeChatView.xaml",
               "RelativeToolTip": "WeChatView.xaml",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2026-02-08T08:07:30.386Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-02-08T08:07:30.386Z"
             }
           ]
         }

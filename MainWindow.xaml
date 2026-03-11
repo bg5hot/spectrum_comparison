@@ -20,6 +20,15 @@
         <DataTemplate x:Key="GustEffectFactorViewTemplate">
             <local:GustEffectFactorView/>
         </DataTemplate>
+        <DataTemplate x:Key="BeamDesignViewTemplate">
+            <local:BeamDesignView/>
+        </DataTemplate>
+        <DataTemplate x:Key="ColumnDesignViewTemplate">
+            <local:ColumnDesignView/>
+        </DataTemplate>
+        <DataTemplate x:Key="CircularColumnDesignViewTemplate">
+            <local:CircularColumnDesignView/>
+        </DataTemplate>
         <DataTemplate x:Key="WeChatViewTemplate">
             <local:WeChatView/>
         </DataTemplate>
@@ -62,6 +71,30 @@
                     </StackPanel>
                 </Button>
 
+                <Button x:Name="btnBeam" Click="BtnBeam_Click" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" 
+                        HorizontalContentAlignment="Left" Padding="16,12" Margin="8,4,8,0">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="&#xE7C9;" FontFamily="Segoe MDL2 Assets" FontSize="20" Margin="0,0,12,0" Foreground="{StaticResource FluentBlueBrush}"/>
+                        <TextBlock Text="单筋混凝土梁" FontSize="14" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
+
+                <Button x:Name="btnColumn" Click="BtnColumn_Click" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" 
+                        HorizontalContentAlignment="Left" Padding="16,12" Margin="8,4,8,0">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="&#xE73B;" FontFamily="Segoe MDL2 Assets" FontSize="20" Margin="0,0,12,0" Foreground="{StaticResource FluentBlueBrush}"/>
+                        <TextBlock Text="混凝土矩形柱" FontSize="14" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
+
+                <Button x:Name="btnCircularColumn" Click="BtnCircularColumn_Click" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" 
+                        HorizontalContentAlignment="Left" Padding="16,12" Margin="8,4,8,0">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="&#xEA3B;" FontFamily="Segoe MDL2 Assets" FontSize="20" Margin="0,0,12,0" Foreground="{StaticResource FluentBlueBrush}"/>
+                        <TextBlock Text="混凝土圆形柱" FontSize="14" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
+                
                 <Separator Margin="16,20"/>
                 
                 <Button x:Name="btnWeChat" Click="BtnWeChat_Click" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" 
