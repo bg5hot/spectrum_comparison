@@ -5,6 +5,12 @@
     <!-- Boolean to Visibility Converter -->
     <local:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
 
+    <!-- Inverse Bool Converter -->
+    <local:InverseBoolConverter x:Key="InverseBoolConverter"/>
+
+    <!-- Inverse Bool to Visibility Converter -->
+    <local:InverseBoolToVisibilityConverter x:Key="InverseBoolToVisibilityConverter"/>
+
     <!-- Fluent Design Colors -->
     <Color x:Key="FluentBlue">#0078D4</Color>
     <Color x:Key="FluentLightBlue">#009FAA</Color>

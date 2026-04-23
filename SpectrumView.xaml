@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:SpectrumComparison"
              xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.WPF;assembly=LiveChartsCore.SkiaSharpView.WPF"
+             xmlns:oxy="http://oxyplot.org/wpf"
              mc:Ignorable="d" 
              d:DesignHeight="750" d:DesignWidth="1200">
 
@@ -148,12 +149,9 @@
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
                 <TextBlock Text="Response Spectrum Comparison" FontSize="16" FontWeight="SemiBold" Margin="16" Foreground="{StaticResource FluentTextBrush}"/>
-                <lvc:CartesianChart Grid.Row="1" 
-                                    Series="{Binding Series}"
-                                    XAxes="{Binding XAxes}"
-                                    YAxes="{Binding YAxes}"
-                                    Margin="16,0,16,16"
-                                    LegendPosition="Right"/>
+                <oxy:PlotView Grid.Row="1" 
+                              Model="{Binding SpectrumPlotModel}"
+                              Margin="16,0,16,16"/>
             </Grid>
         </Border>
     </Grid>

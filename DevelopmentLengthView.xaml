@@ -1,0 +1,229 @@
+<UserControl x:Class="SpectrumComparison.DevelopmentLengthView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:SpectrumComparison"
+             mc:Ignorable="d" 
+             d:DesignHeight="750" d:DesignWidth="1200">
+
+    <UserControl.DataContext>
+        <local:DevelopmentLengthViewModel/>
+    </UserControl.DataContext>
+
+    <Grid Background="{StaticResource FluentBackgroundBrush}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <ScrollViewer Grid.Column="0" VerticalScrollBarVisibility="Auto" Margin="16">
+            <StackPanel>
+                <TextBlock Text="ACI 318-19 受拉直钢筋锚固长度 ℓd" Style="{StaticResource SectionTitleStyle}"/>
+
+                <Border Style="{StaticResource CardStyle}">
+                    <StackPanel>
+                        <TextBlock Text="材料参数" Style="{StaticResource StrongLabelStyle}" FontSize="14" Margin="0,0,0,12"/>
+
+                        <Grid Margin="0,0,0,8">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="f'c (psi):" Style="{StaticResource LabelStyle}" Grid.Column="0"/>
+                            <TextBox Text="{Binding Fc, StringFormat=F0}" Style="{StaticResource FluentNumericStyle}" Grid.Column="1" Margin="0,0,8,0"/>
+                            <TextBlock Text="混凝土:" Style="{StaticResource LabelStyle}" Grid.Column="2"/>
+                            <ComboBox ItemsSource="{Binding ConcreteTypeOptions}" SelectedItem="{Binding ConcreteType}"
+                                      Style="{StaticResource FluentComboBoxStyle}" Grid.Column="3"/>
+                        </Grid>
+
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="钢筋等级:" Style="{StaticResource LabelStyle}" Grid.Column="0"/>
+                            <ComboBox ItemsSource="{Binding SteelGradeOptions}" SelectedItem="{Binding SteelGrade}"
+                                      Style="{StaticResource FluentComboBoxStyle}" Grid.Column="1"/>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+                <Border Style="{StaticResource CardStyle}">
+                    <StackPanel>
+                        <TextBlock Text="钢筋参数" Style="{StaticResource StrongLabelStyle}" FontSize="14" Margin="0,0,0,12"/>
+
+                        <Grid Margin="0,0,0,8">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="钢筋型号:" Style="{StaticResource LabelStyle}" Grid.Column="0"/>
+                            <ComboBox ItemsSource="{Binding BarSizeOptions}" SelectedItem="{Binding BarSize}"
+                                      Style="{StaticResource FluentComboBoxStyle}" Grid.Column="1" Margin="0,0,8,0"/>
+                            <TextBlock Text="涂层:" Style="{StaticResource LabelStyle}" Grid.Column="2"/>
+                            <ComboBox ItemsSource="{Binding CoatingOptions}" SelectedItem="{Binding Coating}"
+                                      Style="{StaticResource FluentComboBoxStyle}" Grid.Column="3"/>
+                        </Grid>
+
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="浇筑位置:" Style="{StaticResource LabelStyle}" Grid.Column="0"/>
+                            <ComboBox ItemsSource="{Binding CastingPositionOptions}" SelectedItem="{Binding CastingPosition}"
+                                      Style="{StaticResource FluentComboBoxStyle}" Grid.Column="1"/>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+                <Border Style="{StaticResource CardStyle}">
+                    <StackPanel>
+                        <TextBlock Text="计算方法" Style="{StaticResource StrongLabelStyle}" FontSize="14" Margin="0,0,0,12"/>
+
+                        <Grid Margin="0,0,0,8">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="计算方法:" Style="{StaticResource LabelStyle}" Grid.Column="0"/>
+                            <ComboBox ItemsSource="{Binding CalculationMethodOptions}" SelectedItem="{Binding CalculationMethod}"
+                                      Style="{StaticResource FluentComboBoxStyle}" Grid.Column="1"/>
+                        </Grid>
+
+                        <Grid Visibility="{Binding IsDetailedMethod, Converter={StaticResource BooleanToVisibilityConverter}}">
+                            <StackPanel>
+                                <TextBlock Text="约束参数 (精确公式)" Style="{StaticResource StrongLabelStyle}" FontSize="13" Margin="0,0,0,8"/>
+
+                                <Grid Margin="0,0,0,8">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Text="净保护层 cc (in):" Style="{StaticResource LabelStyle}" Grid.Column="0"/>
+                                    <TextBox Text="{Binding Cc, StringFormat=F2}" Style="{StaticResource FluentNumericStyle}" Grid.Column="1" Margin="0,0,8,0"/>
+                                    <TextBlock Text="钢筋中心距 s (in):" Style="{StaticResource LabelStyle}" Grid.Column="2"/>
+                                    <TextBox Text="{Binding S, StringFormat=F2}" Style="{StaticResource FluentNumericStyle}" Grid.Column="3"/>
+                                </Grid>
+
+                                <Grid Margin="0,0,0,8">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Text="Atr (in²):" Style="{StaticResource LabelStyle}" Grid.Column="0"/>
+                                    <TextBox Text="{Binding Atr, StringFormat=F2}" Style="{StaticResource FluentNumericStyle}" Grid.Column="1" Margin="0,0,8,0"/>
+                                    <TextBlock Text="箍筋间距 str (in):" Style="{StaticResource LabelStyle}" Grid.Column="2"/>
+                                    <TextBox Text="{Binding Str, StringFormat=F1}" Style="{StaticResource FluentNumericStyle}" Grid.Column="3"/>
+                                </Grid>
+
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Text="锚固纵筋数 n:" Style="{StaticResource LabelStyle}" Grid.Column="0"/>
+                                    <TextBox Text="{Binding N, StringFormat=F0}" Style="{StaticResource FluentNumericStyle}" Grid.Column="1"/>
+                                </Grid>
+                            </StackPanel>
+                        </Grid>
+
+                        <Grid Visibility="{Binding IsQuickCalcMethod, Converter={StaticResource BooleanToVisibilityConverter}}">
+                            <StackPanel>
+                                <TextBlock Text="间距与保护层条件 (简化法)" Style="{StaticResource StrongLabelStyle}" FontSize="13" Margin="0,0,0,8"/>
+
+                                <ComboBox ItemsSource="{Binding SpacingCoverConditionOptions}" SelectedItem="{Binding SpacingCoverCondition}"
+                                          Style="{StaticResource FluentComboBoxStyle}"/>
+
+                                <TextBlock Text="条件良好: 净距≥db, 保护层≥db且配箍筋; 或净距≥2db且保护层≥db"
+                                           Style="{StaticResource LabelStyle}" TextWrapping="Wrap" Margin="0,6,0,0" FontSize="11"/>
+                                <TextBlock Text="其他保守情况: 不满足上述条件"
+                                           Style="{StaticResource LabelStyle}" TextWrapping="Wrap" FontSize="11"/>
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+                <Border Style="{StaticResource CardStyle}">
+                    <StackPanel>
+                        <TextBlock Text="抗震与折减选项" Style="{StaticResource StrongLabelStyle}" FontSize="14" Margin="0,0,0,12"/>
+
+                        <CheckBox Content="属于抗震受力体系 (SFRS, SDC C/D/E/F)" IsChecked="{Binding IsSFRS}"
+                                  Margin="0,0,0,8" FontSize="13" Foreground="{StaticResource FluentTextBrush}"/>
+                        <CheckBox Content="位于预期屈服区 (塑性铰区, 1.25倍放大)" IsChecked="{Binding IsYieldZone}"
+                                  Margin="0,0,0,8" FontSize="13" Foreground="{StaticResource FluentTextBrush}"/>
+
+                        <Grid Margin="0,0,0,8">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="As,required (in²):" Style="{StaticResource LabelStyle}" Grid.Column="0"/>
+                            <TextBox Text="{Binding AsRequired, StringFormat=F2}" Style="{StaticResource FluentNumericStyle}" Grid.Column="1" Margin="0,0,8,0"/>
+                            <TextBlock Text="As,provided (in²):" Style="{StaticResource LabelStyle}" Grid.Column="2"/>
+                            <TextBox Text="{Binding AsProvided, StringFormat=F2}" Style="{StaticResource FluentNumericStyle}" Grid.Column="3"/>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+                <Button Content="计算锚固长度" Command="{Binding CalculateCommand}"
+                        Style="{StaticResource PrimaryButtonStyle}" HorizontalAlignment="Stretch" Margin="0,0,0,16"/>
+
+                <Border Style="{StaticResource CardStyle}">
+                    <StackPanel>
+                        <TextBlock Text="计算结果" Style="{StaticResource StrongLabelStyle}" FontSize="14" Margin="0,0,0,12"/>
+
+                        <TextBlock Text="{Binding ResultSummary}" Style="{StaticResource StrongLabelStyle}" FontSize="18" Foreground="{StaticResource FluentBlueBrush}" TextWrapping="Wrap" Margin="0,0,0,8"/>
+
+                        <Separator Style="{StaticResource SeparatorStyle}"/>
+
+                        <TextBlock Text="修正系数:" Style="{StaticResource LabelStyle}" Margin="0,0,0,4"/>
+                        <TextBlock Text="{Binding CoefficientsText}" Style="{StaticResource LabelStyle}" FontFamily="Consolas" Margin="0,0,0,8"/>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </ScrollViewer>
+
+        <Grid Grid.Column="1" Margin="16">
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <StackPanel>
+                    <TextBlock Text="详细计算过程" Style="{StaticResource SectionTitleStyle}"/>
+
+                    <Border Style="{StaticResource CardStyle}">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Text="ACI 318-19 计算步骤:" Style="{StaticResource LabelStyle}" Margin="0,0,0,8" Grid.Row="0"/>
+                            <Border Background="#F5F5F5" BorderBrush="{StaticResource FluentBorderBrush}" BorderThickness="1" CornerRadius="4" Padding="16" Grid.Row="1">
+                                <TextBox Text="{Binding DesignProcess}"
+                                         IsReadOnly="True"
+                                         TextWrapping="Wrap"
+                                         AcceptsReturn="True"
+                                         MinHeight="500"
+                                         Background="Transparent"
+                                         BorderThickness="0"
+                                         FontFamily="Consolas"
+                                         FontSize="13"
+                                         VerticalScrollBarVisibility="Auto"/>
+                            </Border>
+                        </Grid>
+                    </Border>
+                </StackPanel>
+            </ScrollViewer>
+        </Grid>
+    </Grid>
+</UserControl>

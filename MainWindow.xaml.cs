@@ -15,6 +15,12 @@ namespace SpectrumComparison
             contentControl.Content = new SpectrumView();
         }
 
+        private void BtnArtificialWave_Click(object sender, RoutedEventArgs e)
+        {
+            contentControl.ContentTemplate = (DataTemplate)FindResource("ArtificialWaveViewTemplate");
+            contentControl.Content = new ArtificialWaveView();
+        }
+
         private void BtnWind_Click(object sender, RoutedEventArgs e)
         {
             contentControl.ContentTemplate = (DataTemplate)FindResource("WindConversionViewTemplate");
@@ -25,6 +31,12 @@ namespace SpectrumComparison
         {
             contentControl.ContentTemplate = (DataTemplate)FindResource("GustEffectFactorViewTemplate");
             contentControl.Content = new GustEffectFactorView();
+        }
+
+        private void BtnWindSim_Click(object sender, RoutedEventArgs e)
+        {
+            contentControl.ContentTemplate = (DataTemplate)FindResource("WindSimulationViewTemplate");
+            contentControl.Content = new WindSimulationView();
         }
 
         private void BtnBeam_Click(object sender, RoutedEventArgs e)
@@ -49,6 +61,12 @@ namespace SpectrumComparison
         {
             contentControl.ContentTemplate = (DataTemplate)FindResource("PunchingShearViewTemplate");
             contentControl.Content = new PunchingShearView();
+        }
+
+        private void BtnDevelopmentLength_Click(object sender, RoutedEventArgs e)
+        {
+            contentControl.ContentTemplate = (DataTemplate)FindResource("DevelopmentLengthViewTemplate");
+            contentControl.Content = new DevelopmentLengthView();
         }
 
         private void BtnWeChat_Click(object sender, RoutedEventArgs e)

@@ -1,0 +1,212 @@
+<UserControl x:Class="SpectrumComparison.ArtificialWaveView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:SpectrumComparison"
+             xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.WPF;assembly=LiveChartsCore.SkiaSharpView.WPF"
+             xmlns:oxy="http://oxyplot.org/wpf"
+             mc:Ignorable="d"
+             d:DesignHeight="1200" d:DesignWidth="1000">
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <Grid Background="{StaticResource FluentBackgroundBrush}">
+            <StackPanel Margin="16">
+                <TextBlock Text="地震人工波生成" FontSize="24" FontWeight="Bold" Margin="0,0,0,16" Foreground="{StaticResource FluentTextBrush}"/>
+
+                <TextBlock Text="选择规范" Style="{StaticResource SectionTitleStyle}"/>
+                <Border Style="{StaticResource CardStyle}">
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                        <RadioButton Content="中国规范 GB50011-2010" IsChecked="{Binding UseChineseCode}" Margin="0,0,16,0"/>
+                        <RadioButton Content="美国规范 ASCE 7-16" IsChecked="{Binding UseChineseCode, Converter={StaticResource InverseBoolConverter}}" Margin="0,0,16,0"/>
+                    </StackPanel>
+                </Border>
+
+                <TextBlock Text="中国规范参数" Style="{StaticResource SectionTitleStyle}" Visibility="{Binding UseChineseCode, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                <Border Style="{StaticResource CardStyle}" Visibility="{Binding UseChineseCode, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <StackPanel>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel Grid.Row="0" Grid.Column="0" Margin="0,0,8,8">
+                                <TextBlock Text="设防烈度" Style="{StaticResource LabelStyle}"/>
+                                <ComboBox ItemsSource="{Binding IntensityOptions}" SelectedItem="{Binding ChinaIntensity}" Style="{StaticResource FluentComboBoxStyle}"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Row="0" Grid.Column="1" Margin="0,0,8,8">
+                                <TextBlock Text="场地类别" Style="{StaticResource LabelStyle}"/>
+                                <ComboBox ItemsSource="{Binding SiteCategoryOptions}" SelectedItem="{Binding ChinaSiteCategory}" Style="{StaticResource FluentComboBoxStyle}"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Row="0" Grid.Column="2" Margin="0,0,0,8">
+                                <TextBlock Text="地震分组" Style="{StaticResource LabelStyle}"/>
+                                <ComboBox ItemsSource="{Binding EarthquakeGroupOptions}" SelectedItem="{Binding ChinaEarthquakeGroup}" Style="{StaticResource FluentComboBoxStyle}"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Row="1" Grid.Column="0" Margin="0,0,8,8">
+                                <TextBlock Text="结构阻尼比" Style="{StaticResource LabelStyle}"/>
+                                <TextBox Text="{Binding Damping, UpdateSourceTrigger=PropertyChanged, StringFormat=F2}" Style="{StaticResource FluentNumericStyle}"/>
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+                <TextBlock Text="美国规范参数" Style="{StaticResource SectionTitleStyle}" Visibility="{Binding UseChineseCode, Converter={StaticResource InverseBoolToVisibilityConverter}}"/>
+                <Border Style="{StaticResource CardStyle}" Visibility="{Binding UseChineseCode, Converter={StaticResource InverseBoolToVisibilityConverter}}">
+                    <StackPanel>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel Grid.Row="0" Grid.Column="0" Margin="0,0,8,8">
+                                <TextBlock Text="Ss (短周期谱加速度)" Style="{StaticResource LabelStyle}"/>
+                                <TextBox Text="{Binding UsSs, UpdateSourceTrigger=PropertyChanged, StringFormat=F2}" Style="{StaticResource FluentNumericStyle}"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Row="0" Grid.Column="1" Margin="0,0,8,8">
+                                <TextBlock Text="S1 (1秒周期谱加速度)" Style="{StaticResource LabelStyle}"/>
+                                <TextBox Text="{Binding UsS1, UpdateSourceTrigger=PropertyChanged, StringFormat=F2}" Style="{StaticResource FluentNumericStyle}"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Row="0" Grid.Column="2" Margin="0,0,0,8">
+                                <TextBlock Text="场地类别" Style="{StaticResource LabelStyle}"/>
+                                <ComboBox ItemsSource="{Binding UsSiteClassOptions}" SelectedItem="{Binding UsSiteClass}" Style="{StaticResource FluentComboBoxStyle}"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Row="1" Grid.Column="0" Margin="0,0,8,8">
+                                <TextBlock Text="Tl (长周期过渡周期)" Style="{StaticResource LabelStyle}"/>
+                                <TextBox Text="{Binding UsTl, UpdateSourceTrigger=PropertyChanged, StringFormat=F1}" Style="{StaticResource FluentNumericStyle}"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Row="1" Grid.Column="1" Margin="0,0,8,8">
+                                <TextBlock Text="R (反应修正系数)" Style="{StaticResource LabelStyle}"/>
+                                <TextBox Text="{Binding UsR, UpdateSourceTrigger=PropertyChanged, StringFormat=F1}" Style="{StaticResource FluentNumericStyle}"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Row="1" Grid.Column="2" Margin="0,0,0,8">
+                                <TextBlock Text="结构阻尼比" Style="{StaticResource LabelStyle}"/>
+                                <TextBox Text="{Binding Damping, UpdateSourceTrigger=PropertyChanged, StringFormat=F2}" Style="{StaticResource FluentNumericStyle}"/>
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+                <TextBlock Text="时程参数" Style="{StaticResource SectionTitleStyle}"/>
+                <Border Style="{StaticResource CardStyle}">
+                    <StackPanel>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel Grid.Column="0" Margin="0,0,8,8">
+                                <TextBlock Text="生成波数量" Style="{StaticResource LabelStyle}"/>
+                                <ComboBox ItemsSource="{Binding NumberOfWavesOptions}" SelectedItem="{Binding NumberOfWaves}" Style="{StaticResource FluentComboBoxStyle}"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Column="1" Margin="0,0,8,8">
+                                <TextBlock Text="时间步长 (s)" Style="{StaticResource LabelStyle}"/>
+                                <ComboBox ItemsSource="{Binding DtOptions}" SelectedItem="{Binding Dt}" Style="{StaticResource FluentComboBoxStyle}"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Column="2" Margin="0,0,8,8">
+                                <TextBlock Text="总时长 (s)" Style="{StaticResource LabelStyle}"/>
+                                <ComboBox ItemsSource="{Binding TTotalOptions}" SelectedItem="{Binding TTotal}" Style="{StaticResource FluentComboBoxStyle}"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Column="3" Margin="0,0,0,8">
+                                <TextBlock Text="迭代次数" Style="{StaticResource LabelStyle}"/>
+                                <ComboBox ItemsSource="{Binding IterationsOptions}" SelectedItem="{Binding NumberOfIterations}" Style="{StaticResource FluentComboBoxStyle}"/>
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+                <TextBlock Text="包络线参数（三段式）" Style="{StaticResource SectionTitleStyle}"/>
+                <Border Style="{StaticResource CardStyle}">
+                    <StackPanel>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel Grid.Column="0" Margin="0,0,8,8">
+                                <TextBlock Text="T1 - 上升段结束时间 (s)" Style="{StaticResource LabelStyle}"/>
+                                <TextBox Text="{Binding T1, UpdateSourceTrigger=PropertyChanged, StringFormat=F1}" Style="{StaticResource FluentNumericStyle}"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Column="1" Margin="0,0,8,8">
+                                <TextBlock Text="T2 - 平稳段结束时间 (s)" Style="{StaticResource LabelStyle}"/>
+                                <TextBox Text="{Binding T2, UpdateSourceTrigger=PropertyChanged, StringFormat=F1}" Style="{StaticResource FluentNumericStyle}"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Column="2" Margin="0,0,0,8">
+                                <TextBlock Text="衰减系数" Style="{StaticResource LabelStyle}"/>
+                                <TextBox Text="{Binding CDecay, UpdateSourceTrigger=PropertyChanged, StringFormat=F2}" Style="{StaticResource FluentNumericStyle}"/>
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,16">
+                    <Button Content="生成人工波" Command="{Binding GenerateCommand}" Style="{StaticResource PrimaryButtonStyle}" Width="150" Height="40" Margin="0,0,8,0" IsEnabled="{Binding IsGenerating, Converter={StaticResource InverseBoolConverter}}"/>
+                    <Button Content="保存到文件" Command="{Binding SaveCommand}" Style="{StaticResource PrimaryButtonStyle}" Width="150" Height="40" Margin="0,0,0,0"/>
+                    <ProgressBar IsIndeterminate="True" Width="200" Height="40" Margin="16,0,0,0" Visibility="{Binding IsGenerating, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                </StackPanel>
+
+                <TextBlock Text="生成结果" Style="{StaticResource SectionTitleStyle}"/>
+                <Border Style="{StaticResource CardStyle}">
+                    <StackPanel>
+                        <TextBlock Text="{Binding ResultText}" FontSize="14" FontWeight="SemiBold" Margin="0,0,0,8" Foreground="{StaticResource FluentTextBrush}"/>
+                    </StackPanel>
+                </Border>
+
+                <TextBlock Text="地震波加速度时程" Style="{StaticResource SectionTitleStyle}"/>
+                <Border Style="{StaticResource CardStyle}">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                            <TextBlock Text="选择地震波：" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                            <ComboBox ItemsSource="{Binding WaveIndexOptions}" SelectedItem="{Binding SelectedWaveIndex}" Width="100" Style="{StaticResource FluentComboBoxStyle}"/>
+                        </StackPanel>
+                        <oxy:PlotView Model="{Binding WavePlotModel}" Height="300"/>
+                    </StackPanel>
+                </Border>
+
+                <TextBlock Text="反应谱对比" Style="{StaticResource SectionTitleStyle}"/>
+                <Border Style="{StaticResource CardStyle}">
+                    <StackPanel>
+                        <oxy:PlotView Model="{Binding SpectrumPlotModel}" Height="400"/>
+                    </StackPanel>
+                </Border>
+
+                <TextBlock Text="计算过程" Style="{StaticResource SectionTitleStyle}"/>
+                <Border Style="{StaticResource CardStyle}">
+                    <StackPanel>
+                        <ScrollViewer MaxHeight="200" VerticalScrollBarVisibility="Auto">
+                            <TextBlock Text="{Binding ProcessText}" FontFamily="Consolas" FontSize="11" TextWrapping="Wrap" Padding="8" Background="#F5F5F5"/>
+                        </ScrollViewer>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </Grid>
+    </ScrollViewer>
+</UserControl>

@@ -1,0 +1,95 @@
+<UserControl x:Class="SpectrumComparison.WindSimulationView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:SpectrumComparison"
+             xmlns:oxy="http://oxyplot.org/wpf"
+             mc:Ignorable="d"
+             d:DesignHeight="1200" d:DesignWidth="1000">
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <Grid Background="{StaticResource FluentBackgroundBrush}">
+            <StackPanel Margin="16">
+                <TextBlock Text="美标脉动风模拟 (ASCE 7-16)" FontSize="24" FontWeight="Bold" Margin="0,0,0,16" Foreground="{StaticResource FluentTextBrush}"/>
+
+                <TextBlock Text="模拟参数" Style="{StaticResource SectionTitleStyle}"/>
+                <Border Style="{StaticResource CardStyle}">
+                    <StackPanel>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel Grid.Row="0" Grid.Column="0" Margin="0,0,8,8">
+                                <TextBlock Text="基本风速 V (mph)" Style="{StaticResource LabelStyle}"/>
+                                <TextBox Text="{Binding VRef, UpdateSourceTrigger=PropertyChanged, StringFormat=F0}" Style="{StaticResource FluentNumericStyle}"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Row="0" Grid.Column="1" Margin="0,0,8,8">
+                                <TextBlock Text="场地类别 Exposure" Style="{StaticResource LabelStyle}"/>
+                                <ComboBox ItemsSource="{Binding ExposureOptions}" SelectedItem="{Binding Exposure}" Style="{StaticResource FluentComboBoxStyle}"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Row="0" Grid.Column="2" Margin="0,0,0,8">
+                                <TextBlock Text="目标高度 z (ft)" Style="{StaticResource LabelStyle}"/>
+                                <TextBox Text="{Binding Height, UpdateSourceTrigger=PropertyChanged, StringFormat=F1}" Style="{StaticResource FluentNumericStyle}"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Row="1" Grid.Column="0" Margin="0,0,8,8">
+                                <TextBlock Text="模拟时长 (s)" Style="{StaticResource LabelStyle}"/>
+                                <ComboBox ItemsSource="{Binding DurationOptions}" SelectedItem="{Binding Duration}" Style="{StaticResource FluentComboBoxStyle}"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Row="1" Grid.Column="1" Margin="0,0,8,8">
+                                <TextBlock Text="采样频率 (Hz)" Style="{StaticResource LabelStyle}"/>
+                                <ComboBox ItemsSource="{Binding SampleRateOptions}" SelectedItem="{Binding SampleRate}" Style="{StaticResource FluentComboBoxStyle}"/>
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,16">
+                    <Button Content="开始模拟" Command="{Binding GenerateCommand}" Style="{StaticResource PrimaryButtonStyle}" Width="150" Height="40" Margin="0,0,8,0" IsEnabled="{Binding IsGenerating, Converter={StaticResource InverseBoolConverter}}"/>
+                    <Button Content="保存到文件" Command="{Binding SaveCommand}" Style="{StaticResource PrimaryButtonStyle}" Width="150" Height="40" Margin="0,0,0,0"/>
+                    <ProgressBar IsIndeterminate="True" Width="200" Height="40" Margin="16,0,0,0" Visibility="{Binding IsGenerating, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                </StackPanel>
+
+                <TextBlock Text="模拟结果" Style="{StaticResource SectionTitleStyle}"/>
+                <Border Style="{StaticResource CardStyle}">
+                    <StackPanel>
+                        <TextBlock Text="{Binding ResultText}" FontSize="14" FontWeight="SemiBold" Margin="0,0,0,8" Foreground="{StaticResource FluentTextBrush}"/>
+                    </StackPanel>
+                </Border>
+
+                <TextBlock Text="脉动风速时程" Style="{StaticResource SectionTitleStyle}" Visibility="{Binding HasData, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                <Border Style="{StaticResource CardStyle}" Visibility="{Binding HasData, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <StackPanel>
+                        <oxy:PlotView Model="{Binding WindPlotModel}" Height="300"/>
+                    </StackPanel>
+                </Border>
+
+                <TextBlock Text="功率谱密度对比" Style="{StaticResource SectionTitleStyle}" Visibility="{Binding HasData, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                <Border Style="{StaticResource CardStyle}" Visibility="{Binding HasData, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <StackPanel>
+                        <oxy:PlotView Model="{Binding PsdPlotModel}" Height="350"/>
+                    </StackPanel>
+                </Border>
+
+                <TextBlock Text="计算过程" Style="{StaticResource SectionTitleStyle}"/>
+                <Border Style="{StaticResource CardStyle}">
+                    <StackPanel>
+                        <ScrollViewer MaxHeight="200" VerticalScrollBarVisibility="Auto">
+                            <TextBlock Text="{Binding ProcessText}" FontFamily="Consolas" FontSize="11" TextWrapping="Wrap" Padding="8" Background="#F5F5F5"/>
+                        </ScrollViewer>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </Grid>
+    </ScrollViewer>
+</UserControl>

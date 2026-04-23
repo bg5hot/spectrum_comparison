@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using LiveChartsCore;
-using LiveChartsCore.SkiaSharpView;
-using LiveChartsCore.SkiaSharpView.Painting;
-using SkiaSharp;
+using OxyPlot;
+using OxyPlot.Series;
+using OxyPlot.Axes;
+using OxyPlot.Legends;
 
 namespace SpectrumComparison
 {
@@ -128,32 +128,13 @@ namespace SpectrumComparison
 
         public List<string> UsSiteClassOptions { get; } = new() { "A", "B", "C", "D" };
 
-        public ISeries[] Series { get; private set; } = Array.Empty<ISeries>();
+        private PlotModel _spectrumPlotModel = new PlotModel();
 
-        public Axis[] XAxes { get; } = new[]
+        public PlotModel SpectrumPlotModel
         {
-            new Axis
-            {
-                Name = "Period T (s)",
-                NamePaint = new SolidColorPaint(SKColors.Black),
-                LabelsPaint = new SolidColorPaint(SKColors.Black),
-                TextSize = 12,
-                MinLimit = 0,
-                MaxLimit = 6
-            }
-        };
-
-        public Axis[] YAxes { get; } = new[]
-        {
-            new Axis
-            {
-                Name = "Spectral Acceleration (g)",
-                NamePaint = new SolidColorPaint(SKColors.Black),
-                LabelsPaint = new SolidColorPaint(SKColors.Black),
-                TextSize = 12,
-                MinLimit = 0
-            }
-        };
+            get => _spectrumPlotModel;
+            set { _spectrumPlotModel = value; OnPropertyChanged(); }
+        }
 
         private void UpdateChart()
         {
@@ -172,33 +153,70 @@ namespace SpectrumComparison
                 UsFaFvText = $"Fa: {fa:F2}   Fv: {fv:F2}";
                 UsSdsSd1Text = $"SDS: {sds:F3}g   SD1: {sd1:F3}g";
 
-                var chinaValues = chinaPeriods.Select((t, i) => new LiveChartsCore.Defaults.ObservablePoint(t, chinaAlpha[i])).ToList();
-                var usValues = usPeriods.Select((t, i) => new LiveChartsCore.Defaults.ObservablePoint(t, usSa[i])).ToList();
-
-                double maxVal = Math.Max(chinaAlpha.Max(), usSa.Max());
-                YAxes[0].MaxLimit = maxVal * 1.1;
-
-                Series = new ISeries[]
+                var plotModel = new PlotModel
                 {
-                    new LineSeries<LiveChartsCore.Defaults.ObservablePoint>
-                    {
-                        Name = "China GB50011-2010",
-                        Values = chinaValues,
-                        Stroke = new SolidColorPaint(new SKColor(0, 159, 170)) { StrokeThickness = 2 },
-                        Fill = null,
-                        GeometrySize = 0
-                    },
-                    new LineSeries<LiveChartsCore.Defaults.ObservablePoint>
-                    {
-                        Name = $"US ASCE7-16 (R={UsR})",
-                        Values = usValues,
-                        Stroke = new SolidColorPaint(new SKColor(255, 107, 0)) { StrokeThickness = 2 },
-                        Fill = null,
-                        GeometrySize = 0
-                    }
+                    Title = "Response Spectrum Comparison",
+                    TitleFontSize = 14,
+                    TitleFontWeight = 600,
+                    Background = OxyColors.White
                 };
 
-                OnPropertyChanged(nameof(Series));
+                var periodAxis = new LinearAxis
+                {
+                    Position = AxisPosition.Bottom,
+                    Title = "Period T (s)",
+                    Minimum = 0,
+                    Maximum = 6,
+                    MajorGridlineStyle = LineStyle.Solid,
+                    MinorGridlineStyle = LineStyle.Dot
+                };
+
+                double maxVal = Math.Max(chinaAlpha.Max(), usSa.Max());
+                var saAxis = new LinearAxis
+                {
+                    Position = AxisPosition.Left,
+                    Title = "Spectral Acceleration (g)",
+                    Minimum = 0,
+                    Maximum = maxVal * 1.1,
+                    MajorGridlineStyle = LineStyle.Solid,
+                    MinorGridlineStyle = LineStyle.Dot
+                };
+
+                var chinaSeries = new LineSeries
+                {
+                    Title = "China GB50011-2010",
+                    Color = OxyColor.FromRgb(0, 159, 170),
+                    LineStyle = LineStyle.Solid,
+                    StrokeThickness = 2,
+                    MarkerType = MarkerType.None
+                };
+
+                var usSeries = new LineSeries
+                {
+                    Title = $"US ASCE7-16 (R={UsR})",
+                    Color = OxyColor.FromRgb(255, 107, 0),
+                    LineStyle = LineStyle.Solid,
+                    StrokeThickness = 2,
+                    MarkerType = MarkerType.None
+                };
+
+                for (int i = 0; i < chinaPeriods.Length; i++)
+                {
+                    chinaSeries.Points.Add(new DataPoint(chinaPeriods[i], chinaAlpha[i]));
+                }
+
+                for (int i = 0; i < usPeriods.Length; i++)
+                {
+                    usSeries.Points.Add(new DataPoint(usPeriods[i], usSa[i]));
+                }
+
+                plotModel.Axes.Add(periodAxis);
+                plotModel.Axes.Add(saAxis);
+                plotModel.Series.Add(chinaSeries);
+                plotModel.Series.Add(usSeries);
+                plotModel.Legends.Add(new Legend());
+
+                SpectrumPlotModel = plotModel;
             }
             catch (Exception ex)
             {

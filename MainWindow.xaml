@@ -14,11 +14,17 @@
         <DataTemplate x:Key="SpectrumViewTemplate">
             <local:SpectrumView/>
         </DataTemplate>
+        <DataTemplate x:Key="ArtificialWaveViewTemplate">
+            <local:ArtificialWaveView/>
+        </DataTemplate>
         <DataTemplate x:Key="WindConversionViewTemplate">
             <local:WindConversionView/>
         </DataTemplate>
         <DataTemplate x:Key="GustEffectFactorViewTemplate">
             <local:GustEffectFactorView/>
+        </DataTemplate>
+        <DataTemplate x:Key="WindSimulationViewTemplate">
+            <local:WindSimulationView/>
         </DataTemplate>
         <DataTemplate x:Key="BeamDesignViewTemplate">
             <local:BeamDesignView/>
@@ -31,6 +37,9 @@
         </DataTemplate>
         <DataTemplate x:Key="PunchingShearViewTemplate">
             <local:PunchingShearView/>
+        </DataTemplate>
+        <DataTemplate x:Key="DevelopmentLengthViewTemplate">
+            <local:DevelopmentLengthView/>
         </DataTemplate>
         <DataTemplate x:Key="WeChatViewTemplate">
             <local:WeChatView/>
@@ -50,7 +59,7 @@
                 <Separator Margin="16,0"/>
 
                 <!-- Navigation Items -->
-                <Button x:Name="btnSpectrum" Click="BtnSpectrum_Click" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" 
+                <Button x:Name="btnSpectrum" Click="BtnSpectrum_Click" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"
                         HorizontalContentAlignment="Left" Padding="16,12" Margin="8,8,8,0">
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="&#xE80F;" FontFamily="Segoe MDL2 Assets" FontSize="20" Margin="0,0,12,0" Foreground="{StaticResource FluentBlueBrush}"/>
@@ -58,7 +67,15 @@
                     </StackPanel>
                 </Button>
 
-                <Button x:Name="btnWind" Click="BtnWind_Click" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" 
+                <Button x:Name="btnArtificialWave" Click="BtnArtificialWave_Click" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"
+                        HorizontalContentAlignment="Left" Padding="16,12" Margin="8,4,8,0">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="&#xE7AF;" FontFamily="Segoe MDL2 Assets" FontSize="20" Margin="0,0,12,0" Foreground="{StaticResource FluentBlueBrush}"/>
+                        <TextBlock Text="地震人工波模拟" FontSize="14" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
+
+                <Button x:Name="btnWind" Click="BtnWind_Click" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"
                         HorizontalContentAlignment="Left" Padding="16,12" Margin="8,4,8,0">
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="&#xE753;" FontFamily="Segoe MDL2 Assets" FontSize="20" Margin="0,0,12,0" Foreground="{StaticResource FluentBlueBrush}"/>
@@ -71,6 +88,14 @@
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="&#xE753;" FontFamily="Segoe MDL2 Assets" FontSize="20" Margin="0,0,12,0" Foreground="{StaticResource FluentBlueBrush}"/>
                         <TextBlock Text="阵风响应因子G" FontSize="14" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
+
+                <Button x:Name="btnWindSim" Click="BtnWindSim_Click" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" 
+                        HorizontalContentAlignment="Left" Padding="16,12" Margin="8,4,8,0">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="&#xE753;" FontFamily="Segoe MDL2 Assets" FontSize="20" Margin="0,0,12,0" Foreground="{StaticResource FluentBlueBrush}"/>
+                        <TextBlock Text="脉动风模拟" FontSize="14" VerticalAlignment="Center"/>
                     </StackPanel>
                 </Button>
 
@@ -103,6 +128,14 @@
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="&#xE80A;" FontFamily="Segoe MDL2 Assets" FontSize="20" Margin="0,0,12,0" Foreground="{StaticResource FluentBlueBrush}"/>
                         <TextBlock Text="双向板抗冲切" FontSize="14" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
+
+                <Button x:Name="btnDevelopmentLength" Click="BtnDevelopmentLength_Click" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" 
+                        HorizontalContentAlignment="Left" Padding="16,12" Margin="8,4,8,0">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="&#xE7BF;" FontFamily="Segoe MDL2 Assets" FontSize="20" Margin="0,0,12,0" Foreground="{StaticResource FluentBlueBrush}"/>
+                        <TextBlock Text="钢筋锚固长度" FontSize="14" VerticalAlignment="Center"/>
                     </StackPanel>
                 </Button>
                 

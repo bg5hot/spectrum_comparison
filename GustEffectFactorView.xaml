@@ -20,7 +20,7 @@
         <!-- 左侧：输入参数 -->
         <ScrollViewer Grid.Column="0" VerticalScrollBarVisibility="Auto" Margin="16">
             <StackPanel>
-                <TextBlock Text="ASCE 7-16 阵风响应因子 Gust-Effect Factor计算" Style="{StaticResource SectionTitleStyle}"/>
+                <TextBlock Text="ASCE 7-16 阵风响应因子 Gust-Effect Factor计算（SI单位）" Style="{StaticResource SectionTitleStyle}"/>
                 
                 <!-- 场地参数 -->
                 <Border Style="{StaticResource CardStyle}">
